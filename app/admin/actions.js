@@ -147,7 +147,29 @@ export async function deletePlayerAction(id) {
 /* ---------------- ACTUS ---------------- */
 
 export async function createNewsAction(formData) {
-  await data.addNews(Object.fromEntries(formData));
+  const titre = (formData.get("titre") || "").toString();
+  const resume = (formData.get("resume") || "").toString();
+  const contenu = (formData.get("contenu") || "").toString();
+
+  const file = formData.get("image");
+
+  let image = "";
+
+  // Vérifie qu'un vrai fichier a été sélectionné
+  if (file instanceof File && file.size > 0) {
+    const uploadedUrl = await uploadImage(file);
+
+    if (uploadedUrl) {
+      image = uploadedUrl;
+    }
+  }
+
+  await data.addNews({
+    titre,
+    resume,
+    contenu,
+    image,
+  });
 
   revalidatePath("/admin/dashboard");
   revalidatePath("/actu");
@@ -155,7 +177,38 @@ export async function createNewsAction(formData) {
 }
 
 export async function updateNewsAction(id, formData) {
-  await data.updateNews(id, Object.fromEntries(formData));
+  const titre = (formData.get("titre") || "").toString();
+  const resume = (formData.get("resume") || "").toString();
+  const contenu = (formData.get("contenu") || "").toString();
+
+  // Ancienne image enregistrée dans MongoDB
+  const existingImage = (
+    formData.get("existingImage") || ""
+  ).toString();
+
+  const file = formData.get("image");
+
+  // Par défaut, on conserve l'ancienne image
+  let image = existingImage;
+
+  // Si une nouvelle image est sélectionnée,
+  // on l'envoie à Cloudinary
+  if (file instanceof File && file.size > 0) {
+    const uploadedUrl = await uploadImage(file);
+
+    // Si Cloudinary renvoie bien une URL,
+    // elle remplace l'ancienne
+    if (uploadedUrl) {
+      image = uploadedUrl;
+    }
+  }
+
+  await data.updateNews(id, {
+    titre,
+    resume,
+    contenu,
+    image,
+  });
 
   revalidatePath("/admin/dashboard");
   revalidatePath("/actu");
