@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0e0e10;
+  --ink-soft: #17171a;
+  --charcoal: #1c1c1f;
+  --charcoal-line: #2a2a2e;
+  --gold: #d9a916;
+  --gold-bright: #f2c744;
+  --bone: #f3efe4;
+  --bone-dim: #b8b4a8;
+  --pitch: #1f3d2b;
+  --pitch-bright: #3fae5c;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-charcoal: var(--charcoal);
+  --color-charcoal-line: var(--charcoal-line);
+  --color-gold: var(--gold);
+  --color-gold-bright: var(--gold-bright);
+  --color-bone: var(--bone);
+  --color-bone-dim: var(--bone-dim);
+  --color-pitch: var(--pitch);
+  --color-pitch-bright: var(--pitch-bright);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-score: var(--font-score);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-body);
+}
+
+* {
+  border-color: var(--charcoal-line);
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-score {
+  font-family: var(--font-score);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Motif hexagonal discret en fond, clin d'oeil au ballon du logo */
+.hex-field {
+  background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(217, 169, 22, 0.14) 1px,
+      transparent 0
+    );
+  background-size: 28px 28px;
+}
+
+.scoreboard-digit {
+  text-shadow: 0 0 12px rgba(242, 199, 68, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* focus visible clair pour l'accessibilité clavier */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 2px;
+}
