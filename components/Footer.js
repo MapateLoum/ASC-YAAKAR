@@ -12,7 +12,7 @@ export default function Footer() {
             </p>
           </div>
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-gold-bright">
+            <p className="text-sm font-semibold uppercase tracking-wider text-lg text-gold">
             Navigation
           </p>
             <ul className="mt-3 space-y-2 text-sm">
@@ -23,7 +23,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-bone-dim">
+            <p className="text-sm font-semibold uppercase tracking-wider text-lg text-gold">
               Le quartier
             </p>
             <p className="mt-3 text-sm text-bone-dim">Mboro, Thiès — Sénégal</p>
