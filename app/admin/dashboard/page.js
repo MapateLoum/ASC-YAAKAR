@@ -76,7 +76,7 @@ function SectionTitle({ children }) {
 
 function Field({ label, children }) {
   return (
-    <label className="block text-sm">
+    <label className="block min-w-0 text-sm">
       <span className="text-bone-dim">{label}</span>
       {children}
     </label>
@@ -84,7 +84,7 @@ function Field({ label, children }) {
 }
 
 const inputClass =
-  "mt-1 w-full rounded-md border border-charcoal-line bg-ink px-3 py-2 text-sm text-bone outline-none focus:border-gold";
+  "mt-1 w-full min-w-0 max-w-full box-border rounded-md border border-charcoal-line bg-ink px-3 py-2 text-sm text-bone outline-none focus:border-gold";
 
 /* ---------------- MATCHS ---------------- */
 
@@ -108,7 +108,7 @@ function MatchesSection({ matches }) {
             </summary>
             <form
               action={updateMatchAction.bind(null, m._id)}
-              className="mt-4 grid gap-3 sm:grid-cols-2"
+              className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2"
             >
               <MatchFields defaults={m} />
               <div className="col-span-full pt-2">
@@ -124,7 +124,7 @@ function MatchesSection({ matches }) {
         <summary className="cursor-pointer font-display text-base text-gold-bright">
           + Ajouter un match
         </summary>
-        <form action={createMatchAction} className="mt-4 grid gap-3 sm:grid-cols-2">
+        <form action={createMatchAction} className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2">
           <MatchFields />
           <div className="col-span-full pt-2">
             <SubmitBtn>Ajouter</SubmitBtn>
@@ -221,7 +221,7 @@ function PlayersSection({ players }) {
             </summary>
             <form
               action={updatePlayerAction.bind(null, p._id)}
-              className="mt-4 grid gap-3 sm:grid-cols-2"
+              className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2"
             >
               <PlayerFields defaults={p} />
               <div className="col-span-full pt-2">
@@ -237,7 +237,7 @@ function PlayersSection({ players }) {
         <summary className="cursor-pointer font-display text-base text-gold-bright">
           + Ajouter un joueur
         </summary>
-        <form action={createPlayerAction} className="mt-4 grid gap-3 sm:grid-cols-2">
+        <form action={createPlayerAction} className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2">
           <PlayerFields />
           <div className="col-span-full pt-2">
             <SubmitBtn>Ajouter</SubmitBtn>
@@ -318,7 +318,7 @@ function NewsSection({ news }) {
             </summary>
             <form
               action={updateNewsAction.bind(null, n._id)}
-              className="mt-4 grid gap-3"
+              className="mt-4 grid min-w-0 gap-3"
             >
               <NewsFields defaults={n} />
               <div className="pt-2">
@@ -334,7 +334,7 @@ function NewsSection({ news }) {
         <summary className="cursor-pointer font-display text-base text-gold-bright">
           + Ajouter un article
         </summary>
-        <form action={createNewsAction} className="mt-4 grid gap-3">
+        <form action={createNewsAction} className="mt-4 grid min-w-0 gap-3">
           <NewsFields />
           <div className="pt-2">
             <SubmitBtn>Publier</SubmitBtn>

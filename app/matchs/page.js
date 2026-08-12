@@ -86,31 +86,38 @@ function MatchRow({ match }) {
     : "";
 
   return (
-    <div className="flex items-center gap-4 rounded-xl border border-charcoal-line bg-charcoal px-5 py-4">
-      <div className="w-24 shrink-0 text-xs text-bone-dim">
-        <p>{dateStr}</p>
-        {match.lieu && <p className="truncate">{match.lieu}</p>}
+    <div className="flex flex-col gap-3 rounded-xl border border-charcoal-line bg-charcoal px-4 py-4 sm:flex-row sm:items-center sm:gap-4 sm:px-5">
+      <div className="flex items-center justify-between text-xs text-bone-dim sm:w-24 sm:shrink-0 sm:flex-col sm:items-start sm:justify-center">
+        <div>
+          <p>{dateStr}</p>
+          {match.lieu && <p className="truncate max-w-[40vw] sm:max-w-none">{match.lieu}</p>}
+        </div>
+        <span className={`shrink-0 text-right text-xs font-semibold uppercase tracking-wider sm:hidden ${statusColor(match.status)}`}>
+          {statusLabel(match.status)}
+        </span>
       </div>
-      <div className="flex flex-1 items-center justify-center gap-3">
+
+      <div className="grid min-w-0 flex-1 grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
         <span
-          className={`w-32 truncate text-right font-display text-base ${
+          className={`min-w-0 truncate text-right font-display text-sm sm:text-base ${
             match.domicile ? "text-gold-bright" : "text-bone"
           }`}
         >
           {home}
         </span>
-        <span className="font-score text-lg font-bold text-bone">
+        <span className="shrink-0 font-score text-base font-bold text-bone sm:text-lg">
           {played ? `${homeScore ?? "-"} : ${awayScore ?? "-"}` : "vs"}
         </span>
         <span
-          className={`w-32 truncate text-left font-display text-base ${
+          className={`min-w-0 truncate text-left font-display text-sm sm:text-base ${
             !match.domicile ? "text-gold-bright" : "text-bone"
           }`}
         >
           {away}
         </span>
       </div>
-      <span className={`w-20 shrink-0 text-right text-xs font-semibold uppercase tracking-wider ${statusColor(match.status)}`}>
+
+      <span className={`hidden shrink-0 text-right text-xs font-semibold uppercase tracking-wider sm:block sm:w-20 ${statusColor(match.status)}`}>
         {statusLabel(match.status)}
       </span>
     </div>

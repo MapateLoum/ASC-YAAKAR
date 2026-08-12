@@ -39,19 +39,19 @@ export default function Scoreboard({ match }) {
           </span>
         )}
       </div>
-      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-5 py-6">
-        <div className="text-right">
-          <p className="font-display text-lg leading-none text-bone md:text-2xl">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 px-3 py-6 sm:gap-3 sm:px-5">
+        <div className="min-w-0 text-right">
+          <p className="truncate font-display text-base leading-tight text-bone sm:text-lg md:text-2xl">
             {home}
           </p>
         </div>
-        <div className="flex items-center gap-2 font-score text-3xl font-bold text-gold-bright scoreboard-digit md:text-4xl">
+        <div className="flex shrink-0 items-center gap-1.5 font-score text-2xl font-bold text-gold-bright scoreboard-digit sm:gap-2 sm:text-3xl md:text-4xl">
           <span>{played ? homeScore ?? "-" : "—"}</span>
           <span className="text-bone-dim">:</span>
           <span>{played ? awayScore ?? "-" : "—"}</span>
         </div>
-        <div className="text-left">
-          <p className="font-display text-lg leading-none text-bone md:text-2xl">
+        <div className="min-w-0 text-left">
+          <p className="truncate font-display text-base leading-tight text-bone sm:text-lg md:text-2xl">
             {away}
           </p>
         </div>
