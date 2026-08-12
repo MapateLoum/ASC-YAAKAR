@@ -12,9 +12,9 @@ export default function Footer() {
             </p>
           </div>
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-bone-dim">
-              Navigation
-            </p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-gold-bright">
+            Navigation
+          </p>
             <ul className="mt-3 space-y-2 text-sm">
               <li><Link href="/matchs" className="text-bone hover:text-gold-bright">Calendrier &amp; résultats</Link></li>
               <li><Link href="/effectif" className="text-bone hover:text-gold-bright">L&apos;effectif</Link></li>
