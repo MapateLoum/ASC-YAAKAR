@@ -1,4 +1,5 @@
 import { getAllMatches, getAllPlayers, getAllNews } from "@/lib/data";
+import GoalsEditor from "@/components/GoalsEditor";
 import {
   logoutAction,
   createMatchAction,
@@ -57,7 +58,7 @@ export default async function DashboardPage() {
         </form>
       </div>
 
-      <MatchesSection matches={matches} />
+      <MatchesSection matches={matches} players={players} />
       <PlayersSection players={players} />
       <NewsSection news={news} />
     </div>
@@ -88,7 +89,7 @@ const inputClass =
 
 /* ---------------- MATCHS ---------------- */
 
-function MatchesSection({ matches }) {
+function MatchesSection({ matches, players }) {
   return (
     <section>
       <SectionTitle>Matchs</SectionTitle>
@@ -96,7 +97,7 @@ function MatchesSection({ matches }) {
       <div className="space-y-3">
         {matches.map((m) => (
           <details
-            key={`${m._id}:${m.adversaire}:${m.domicile}:${m.date}:${m.lieu}:${m.poule}:${m.status}:${m.score_yaakar}:${m.score_adverse}`}
+            key={`${m._id}:${m.adversaire}:${m.domicile}:${m.date}:${m.lieu}:${m.poule}:${m.status}:${m.score_yaakar}:${m.score_adverse}:${JSON.stringify(m.buteurs)}`}
             className="rounded-xl border border-charcoal-line bg-charcoal p-4"
           >
             <summary className="cursor-pointer font-display text-base text-bone">
@@ -110,7 +111,7 @@ function MatchesSection({ matches }) {
               action={updateMatchAction.bind(null, m._id)}
               className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2"
             >
-              <MatchFields defaults={m} />
+              <MatchFields defaults={m} players={players} />
               <div className="col-span-full pt-2">
                 <SubmitBtn>Enregistrer</SubmitBtn>
               </div>
@@ -125,7 +126,7 @@ function MatchesSection({ matches }) {
           + Ajouter un match
         </summary>
         <form action={createMatchAction} className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2">
-          <MatchFields />
+          <MatchFields players={players} />
           <div className="col-span-full pt-2">
             <SubmitBtn>Ajouter</SubmitBtn>
           </div>
@@ -135,7 +136,7 @@ function MatchesSection({ matches }) {
   );
 }
 
-function MatchFields({ defaults = {} }) {
+function MatchFields({ defaults = {}, players = [] }) {
   return (
     <>
       <Field label="Adversaire">
@@ -198,6 +199,7 @@ function MatchFields({ defaults = {} }) {
           className={inputClass}
         />
       </Field>
+      <GoalsEditor players={players} defaultGoals={defaults.buteurs || []} />
     </>
   );
 }

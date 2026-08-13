@@ -84,42 +84,62 @@ function MatchRow({ match }) {
         month: "short",
       })
     : "";
+  const buteurs = (match.buteurs || [])
+    .slice()
+    .sort((a, b) => (a.minute ?? 999) - (b.minute ?? 999));
 
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-charcoal-line bg-charcoal px-4 py-4 sm:flex-row sm:items-center sm:gap-4 sm:px-5">
-      <div className="flex items-center justify-between text-xs text-bone-dim sm:w-24 sm:shrink-0 sm:flex-col sm:items-start sm:justify-center">
-        <div>
-          <p>{dateStr}</p>
-          {match.lieu && <p className="truncate max-w-[40vw] sm:max-w-none">{match.lieu}</p>}
+    <div className="rounded-xl border border-charcoal-line bg-charcoal px-4 py-4 sm:px-5">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+        <div className="flex items-center justify-between text-xs text-bone-dim sm:w-24 sm:shrink-0 sm:flex-col sm:items-start sm:justify-center">
+          <div>
+            <p>{dateStr}</p>
+            {match.lieu && <p className="truncate max-w-[40vw] sm:max-w-none">{match.lieu}</p>}
+          </div>
+          <span className={`shrink-0 text-right text-xs font-semibold uppercase tracking-wider sm:hidden ${statusColor(match.status)}`}>
+            {statusLabel(match.status)}
+          </span>
         </div>
-        <span className={`shrink-0 text-right text-xs font-semibold uppercase tracking-wider sm:hidden ${statusColor(match.status)}`}>
+
+        <div className="grid min-w-0 flex-1 grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
+          <span
+            className={`min-w-0 truncate text-right font-display text-sm sm:text-base ${
+              match.domicile ? "text-gold-bright" : "text-bone"
+            }`}
+          >
+            {home}
+          </span>
+          <span className="shrink-0 font-score text-base font-bold text-bone sm:text-lg">
+            {played ? `${homeScore ?? "-"} : ${awayScore ?? "-"}` : "vs"}
+          </span>
+          <span
+            className={`min-w-0 truncate text-left font-display text-sm sm:text-base ${
+              !match.domicile ? "text-gold-bright" : "text-bone"
+            }`}
+          >
+            {away}
+          </span>
+        </div>
+
+        <span className={`hidden shrink-0 text-right text-xs font-semibold uppercase tracking-wider sm:block sm:w-20 ${statusColor(match.status)}`}>
           {statusLabel(match.status)}
         </span>
       </div>
 
-      <div className="grid min-w-0 flex-1 grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-3">
-        <span
-          className={`min-w-0 truncate text-right font-display text-sm sm:text-base ${
-            match.domicile ? "text-gold-bright" : "text-bone"
-          }`}
-        >
-          {home}
-        </span>
-        <span className="shrink-0 font-score text-base font-bold text-bone sm:text-lg">
-          {played ? `${homeScore ?? "-"} : ${awayScore ?? "-"}` : "vs"}
-        </span>
-        <span
-          className={`min-w-0 truncate text-left font-display text-sm sm:text-base ${
-            !match.domicile ? "text-gold-bright" : "text-bone"
-          }`}
-        >
-          {away}
-        </span>
-      </div>
-
-      <span className={`hidden shrink-0 text-right text-xs font-semibold uppercase tracking-wider sm:block sm:w-20 ${statusColor(match.status)}`}>
-        {statusLabel(match.status)}
-      </span>
+      {buteurs.length > 0 && (
+        <div className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 border-t border-charcoal-line pt-3 text-xs text-bone-dim">
+          {buteurs.map((b, i) => (
+            <span key={i}>
+              ⚽ <span className="text-bone">{b.joueur}</span>
+              {b.minute ? ` ${b.minute}'` : ""}
+              {b.penalty && <span className="text-gold-bright"> (P)</span>}
+              {b.passeur && (
+                <span className="text-bone-dim"> (passe : {b.passeur})</span>
+              )}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

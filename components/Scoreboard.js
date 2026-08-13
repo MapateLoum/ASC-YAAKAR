@@ -27,6 +27,10 @@ export default function Scoreboard({ match }) {
       })
     : "";
 
+  const buteurs = (match.buteurs || [])
+    .slice()
+    .sort((a, b) => (a.minute ?? 999) - (b.minute ?? 999));
+
   return (
     <div className="overflow-hidden rounded-xl border border-charcoal-line bg-charcoal">
       <div className="flex items-center justify-between border-b border-charcoal-line bg-ink-soft px-4 py-2">
@@ -56,6 +60,18 @@ export default function Scoreboard({ match }) {
           </p>
         </div>
       </div>
+      {buteurs.length > 0 && (
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 border-t border-charcoal-line px-4 py-2 text-xs text-bone-dim">
+          {buteurs.map((b, i) => (
+            <span key={i}>
+              ⚽ <span className="text-bone">{b.joueur}</span>
+              {b.minute ? ` ${b.minute}'` : ""}
+              {b.penalty && <span className="text-gold-bright"> (P)</span>}
+              {b.passeur && <span> (passe : {b.passeur})</span>}
+            </span>
+          ))}
+        </div>
+      )}
       <div className="border-t border-charcoal-line px-4 py-2 text-center text-xs text-bone-dim">
         {dateStr}
         {match.lieu ? ` · ${match.lieu}` : ""}
