@@ -38,6 +38,19 @@ export default async function ArticlePage({ params }) {
         <ImageCarousel images={article.images} alt={article.titre} />
       )}
 
+      {article.videos && article.videos.length > 0 && (
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          {article.videos.map((url) => (
+            <video
+              key={url}
+              src={url}
+              controls
+              className="w-full rounded-xl border border-charcoal-line"
+            />
+          ))}
+        </div>
+      )}
+
       <div className="mt-8 space-y-4 whitespace-pre-line leading-relaxed text-bone-dim">
         {article.contenu}
       </div>

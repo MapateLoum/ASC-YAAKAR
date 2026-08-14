@@ -150,11 +150,19 @@ export async function createNewsAction(formData) {
 
   const images = await uploadImages(files);
 
+  let videos = [];
+  try {
+    videos = JSON.parse(formData.get("newVideoUrls") || "[]");
+  } catch {
+    videos = [];
+  }
+
   await data.addNews({
     titre,
     resume,
     contenu,
     images,
+    videos,
   });
 
   revalidatePath("/admin/dashboard");
@@ -174,6 +182,20 @@ export async function updateNewsAction(id, formData) {
     existingImages = [];
   }
 
+  let existingVideos = [];
+  try {
+    existingVideos = JSON.parse(formData.get("existingVideos") || "[]");
+  } catch {
+    existingVideos = [];
+  }
+
+  let newVideos = [];
+  try {
+    newVideos = JSON.parse(formData.get("newVideoUrls") || "[]");
+  } catch {
+    newVideos = [];
+  }
+
   const files = formData
     .getAll("images")
     .filter((f) => f instanceof File && f.size > 0);
@@ -181,12 +203,14 @@ export async function updateNewsAction(id, formData) {
   const newImages = await uploadImages(files);
 
   const images = [...existingImages, ...newImages];
+  const videos = [...existingVideos, ...newVideos];
 
   await data.updateNews(id, {
     titre,
     resume,
     contenu,
     images,
+    videos,
   });
 
   revalidatePath("/admin/dashboard");

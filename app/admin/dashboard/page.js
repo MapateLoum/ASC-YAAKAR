@@ -1,6 +1,7 @@
 import { getAllMatches, getAllPlayers, getAllNews } from "@/lib/data";
 import GoalsEditor from "@/components/GoalsEditor";
 import ImagesEditor from "@/components/ImagesEditor";
+import VideosEditor from "@/components/VideosEditor";
 import PhotoInput from "@/components/PhotoInput";
 import {
   logoutAction,
@@ -301,7 +302,7 @@ function NewsSection({ news }) {
       <div className="space-y-3">
         {news.map((n) => (
           <details
-            key={`${n._id}:${n.titre}:${n.resume}:${JSON.stringify(n.images)}:${n.contenu}`}
+            key={`${n._id}:${n.titre}:${n.resume}:${JSON.stringify(n.images)}:${JSON.stringify(n.videos)}:${n.contenu}`}
             className="rounded-xl border border-charcoal-line bg-charcoal p-4"
           >
             <summary className="cursor-pointer font-display text-base text-bone">
@@ -351,6 +352,7 @@ function NewsFields({ defaults = {} }) {
         <input name="resume" defaultValue={defaults.resume} className={inputClass} />
       </Field>
       <ImagesEditor defaultImages={defaults.images || []} />
+      <VideosEditor defaultVideos={defaults.videos || []} />
       <Field label="Contenu">
         <textarea
           name="contenu"
