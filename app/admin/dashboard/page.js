@@ -1,5 +1,7 @@
 import { getAllMatches, getAllPlayers, getAllNews } from "@/lib/data";
 import GoalsEditor from "@/components/GoalsEditor";
+import ImagesEditor from "@/components/ImagesEditor";
+import PhotoInput from "@/components/PhotoInput";
 import {
   logoutAction,
   createMatchAction,
@@ -273,20 +275,7 @@ function PlayerFields({ defaults = {} }) {
         />
       </Field>
       <Field label="Photo">
-        {defaults.photo && (
-          <img
-            src={defaults.photo}
-            alt=""
-            className="mt-1 mb-2 h-20 w-20 rounded-md object-cover"
-          />
-        )}
-        <input type="hidden" name="existingPhoto" defaultValue={defaults.photo || ""} />
-        <input
-          type="file"
-          name="photo"
-          accept="image/*"
-          className={`${inputClass} file:mr-3 file:rounded file:border-0 file:bg-gold file:px-3 file:py-1.5 file:text-ink`}
-        />
+        <PhotoInput defaultPhoto={defaults.photo} />
       </Field>
       <div className="col-span-full">
         <Field label="Bio (optionnel)">
@@ -312,7 +301,7 @@ function NewsSection({ news }) {
       <div className="space-y-3">
         {news.map((n) => (
           <details
-            key={`${n._id}:${n.titre}:${n.resume}:${n.image}:${n.contenu}`}
+            key={`${n._id}:${n.titre}:${n.resume}:${JSON.stringify(n.images)}:${n.contenu}`}
             className="rounded-xl border border-charcoal-line bg-charcoal p-4"
           >
             <summary className="cursor-pointer font-display text-base text-bone">
@@ -361,22 +350,7 @@ function NewsFields({ defaults = {} }) {
       <Field label="Résumé (affiché en aperçu)">
         <input name="resume" defaultValue={defaults.resume} className={inputClass} />
       </Field>
-      <Field label="Image">
-        {defaults.image && (
-          <img
-            src={defaults.image}
-            alt=""
-            className="mt-1 mb-2 h-24 w-full rounded-md object-cover"
-          />
-        )}
-        <input type="hidden" name="existingImage" defaultValue={defaults.image || ""} />
-        <input
-          type="file"
-          name="image"
-          accept="image/*"
-          className={`${inputClass} file:mr-3 file:rounded file:border-0 file:bg-gold file:px-3 file:py-1.5 file:text-ink`}
-        />
-      </Field>
+      <ImagesEditor defaultImages={defaults.images || []} />
       <Field label="Contenu">
         <textarea
           name="contenu"

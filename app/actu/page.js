@@ -26,27 +26,36 @@ export default async function ActuPage() {
         </p>
       ) : (
         <div className="mt-10 space-y-4">
-          {news.map((n) => (
-            <Link
-              key={n._id}
-              href={`/actu/${n.slug}`}
-              className="group block rounded-xl border border-charcoal-line bg-charcoal p-6 transition hover:border-gold"
-            >
-              <p className="font-score text-[11px] uppercase tracking-widest text-gold-bright">
-                {new Date(n.date).toLocaleDateString("fr-FR", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </p>
-              <h2 className="mt-2 font-display text-2xl leading-tight text-bone group-hover:text-gold-bright">
-                {n.titre}
-              </h2>
-              {n.resume && (
-                <p className="mt-2 text-sm text-bone-dim">{n.resume}</p>
-              )}
-            </Link>
-          ))}
+{news.map((n) => (
+  <Link
+    key={n._id}
+    href={`/actu/${n.slug}`}
+    className="group flex gap-4 rounded-xl border border-charcoal-line bg-charcoal p-6 transition hover:border-gold"
+  >
+    {n.images && n.images.length > 0 && (
+      <img
+        src={n.images[0]}
+        alt=""
+        className="h-20 w-20 shrink-0 rounded-lg object-cover"
+      />
+    )}
+    <div>
+      <p className="font-score text-[11px] uppercase tracking-widest text-gold-bright">
+        {new Date(n.date).toLocaleDateString("fr-FR", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })}
+      </p>
+      <h2 className="mt-2 font-display text-2xl leading-tight text-bone group-hover:text-gold-bright">
+        {n.titre}
+      </h2>
+      {n.resume && (
+        <p className="mt-2 text-sm text-bone-dim">{n.resume}</p>
+      )}
+    </div>
+  </Link>
+))}
         </div>
       )}
     </div>

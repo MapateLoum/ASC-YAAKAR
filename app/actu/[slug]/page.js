@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getNewsBySlug } from "@/lib/data";
+import ImageCarousel from "@/components/ImageCarousel";
 
 export default async function ArticlePage({ params }) {
   const { slug } = await params;
@@ -34,15 +34,8 @@ export default async function ArticlePage({ params }) {
         {article.titre}
       </h1>
 
-      {article.image && (
-        <div className="relative mt-8 aspect-video w-full overflow-hidden rounded-xl border border-charcoal-line">
-          <Image
-            src={article.image}
-            alt={article.titre}
-            fill
-            className="object-cover"
-          />
-        </div>
+      {article.images && article.images.length > 0 && (
+        <ImageCarousel images={article.images} alt={article.titre} />
       )}
 
       <div className="mt-8 space-y-4 whitespace-pre-line leading-relaxed text-bone-dim">

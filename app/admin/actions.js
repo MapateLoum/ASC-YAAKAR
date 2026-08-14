@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createSession, destroySession } from "@/lib/auth";
-import { uploadImage } from "@/lib/cloudinary";
+import { uploadImage, uploadImages } from "@/lib/cloudinary";
 import * as data from "@/lib/data";
 
 /* ---------------- AUTH ---------------- */
@@ -76,7 +76,6 @@ export async function createPlayerAction(formData) {
 
   let photo = "";
 
-  // Vérifie qu'un vrai fichier a été sélectionné
   if (file instanceof File && file.size > 0) {
     const uploadedUrl = await uploadImage(file);
 
@@ -103,23 +102,17 @@ export async function updatePlayerAction(id, formData) {
   const numero = (formData.get("numero") || "").toString();
   const bio = (formData.get("bio") || "").toString();
 
-  // Ancienne photo enregistrée dans MongoDB
   const existingPhoto = (
     formData.get("existingPhoto") || ""
   ).toString();
 
   const file = formData.get("photo");
 
-  // Par défaut, on conserve l'ancienne photo
   let photo = existingPhoto;
 
-  // Si une nouvelle photo est sélectionnée,
-  // on l'envoie à Cloudinary
   if (file instanceof File && file.size > 0) {
     const uploadedUrl = await uploadImage(file);
 
-    // Si Cloudinary renvoie bien une URL,
-    // elle remplace l'ancienne
     if (uploadedUrl) {
       photo = uploadedUrl;
     }
@@ -151,24 +144,17 @@ export async function createNewsAction(formData) {
   const resume = (formData.get("resume") || "").toString();
   const contenu = (formData.get("contenu") || "").toString();
 
-  const file = formData.get("image");
+  const files = formData
+    .getAll("images")
+    .filter((f) => f instanceof File && f.size > 0);
 
-  let image = "";
-
-  // Vérifie qu'un vrai fichier a été sélectionné
-  if (file instanceof File && file.size > 0) {
-    const uploadedUrl = await uploadImage(file);
-
-    if (uploadedUrl) {
-      image = uploadedUrl;
-    }
-  }
+  const images = await uploadImages(files);
 
   await data.addNews({
     titre,
     resume,
     contenu,
-    image,
+    images,
   });
 
   revalidatePath("/admin/dashboard");
@@ -181,33 +167,26 @@ export async function updateNewsAction(id, formData) {
   const resume = (formData.get("resume") || "").toString();
   const contenu = (formData.get("contenu") || "").toString();
 
-  // Ancienne image enregistrée dans MongoDB
-  const existingImage = (
-    formData.get("existingImage") || ""
-  ).toString();
-
-  const file = formData.get("image");
-
-  // Par défaut, on conserve l'ancienne image
-  let image = existingImage;
-
-  // Si une nouvelle image est sélectionnée,
-  // on l'envoie à Cloudinary
-  if (file instanceof File && file.size > 0) {
-    const uploadedUrl = await uploadImage(file);
-
-    // Si Cloudinary renvoie bien une URL,
-    // elle remplace l'ancienne
-    if (uploadedUrl) {
-      image = uploadedUrl;
-    }
+  let existingImages = [];
+  try {
+    existingImages = JSON.parse(formData.get("existingImages") || "[]");
+  } catch {
+    existingImages = [];
   }
+
+  const files = formData
+    .getAll("images")
+    .filter((f) => f instanceof File && f.size > 0);
+
+  const newImages = await uploadImages(files);
+
+  const images = [...existingImages, ...newImages];
 
   await data.updateNews(id, {
     titre,
     resume,
     contenu,
-    image,
+    images,
   });
 
   revalidatePath("/admin/dashboard");
